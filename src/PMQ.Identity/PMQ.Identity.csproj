@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>PMQ.Identity</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Pablo Mickael Quevedo</Authors>
+    <Company>Pablo Mickael Quevedo</Company>
+    <Product>PMQ.Identity</Product>
+    <Description>Provider-agnostic identity module for authentication and authorization. Supports External (OIDC/JWT) and Local (self-issued JWT) modes.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/PabloMickaelQuevedo/PMQ.Identity</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/PabloMickaelQuevedo/PMQ.Identity.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>identity;authentication;authorization;jwt;oidc</PackageTags>
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Optimize>true</Optimize>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="PMQ.Identity.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+  </ItemGroup>
+
+</Project>

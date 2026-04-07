@@ -1,0 +1,4 @@
+﻿<Solution>
+  <Project Path="src/PMQ.Identity/PMQ.Identity.csproj" />
+  <Project Path="tests/PMQ.Identity.Tests/PMQ.Identity.Tests.csproj" />
+</Solution>
