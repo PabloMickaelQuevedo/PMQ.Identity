@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>PMQ.Identity</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Product>PMQ.Identity</Product>
     <Description>Provider-agnostic identity module for authentication and authorization. Supports External (OIDC/JWT) and Local (self-issued JWT) modes.</Description>
     <PackageProjectUrl>https://github.com/PabloMickaelQuevedo/PMQ.Identity</PackageProjectUrl>
