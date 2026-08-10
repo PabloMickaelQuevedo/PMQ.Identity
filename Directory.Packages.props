@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup Label="Testes">
-    <PackageVersion Include="FluentAssertions" Version="7.2.0" />
+    <PackageVersion Include="FluentAssertions" Version="8.10.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
-    <PackageVersion Include="NSubstitute" Version="6.0.0" />
+    <PackageVersion Include="NSubstitute" Version="6.1.0" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
