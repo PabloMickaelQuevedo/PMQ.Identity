@@ -1,7 +1,7 @@
 using System.Security.Claims;
-using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
+using Shouldly;
 using Xunit;
 
 namespace PMQ.Identity.Tests.Services;
@@ -25,7 +25,7 @@ public class CurrentUserTests
     {
         var sut = CreateCurrentUser();
 
-        sut.IsAuthenticated.Should().BeFalse();
+        sut.IsAuthenticated.ShouldBeFalse();
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public class CurrentUserTests
 
         var sut = CreateCurrentUser(principal);
 
-        sut.IsAuthenticated.Should().BeTrue();
+        sut.IsAuthenticated.ShouldBeTrue();
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class CurrentUserTests
 
         var sut = CreateCurrentUser(principal);
 
-        sut.Id.Should().Be("42");
+        sut.Id.ShouldBe("42");
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class CurrentUserTests
 
         var sut = CreateCurrentUser(principal);
 
-        sut.Email.Should().Be("user@example.com");
+        sut.Email.ShouldBe("user@example.com");
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class CurrentUserTests
 
         var sut = CreateCurrentUser(principal);
 
-        sut.Roles.Should().BeEquivalentTo(["Admin", "User"]);
+        sut.Roles.ShouldBe(["Admin", "User"], ignoreOrder: true);
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class CurrentUserTests
 
         var sut = CreateCurrentUser(principal);
 
-        sut.Roles.Should().BeEmpty();
+        sut.Roles.ShouldBeEmpty();
     }
 
     [Fact]
@@ -95,10 +95,10 @@ public class CurrentUserTests
 
         var sut = new CurrentUser(accessor, new ClaimsMappingOptions());
 
-        sut.IsAuthenticated.Should().BeFalse();
-        sut.Id.Should().BeNull();
-        sut.Email.Should().BeNull();
-        sut.Roles.Should().BeEmpty();
+        sut.IsAuthenticated.ShouldBeFalse();
+        sut.Id.ShouldBeNull();
+        sut.Email.ShouldBeNull();
+        sut.Roles.ShouldBeEmpty();
     }
 
     [Fact]
@@ -109,7 +109,7 @@ public class CurrentUserTests
 
         var sut = CreateCurrentUser(principal);
 
-        sut.FindClaim("tenant_id").Should().Be("abc");
+        sut.FindClaim("tenant_id").ShouldBe("abc");
     }
 
     [Fact]
@@ -120,7 +120,7 @@ public class CurrentUserTests
 
         var sut = CreateCurrentUser(principal);
 
-        sut.FindClaim("nonexistent").Should().BeNull();
+        sut.FindClaim("nonexistent").ShouldBeNull();
     }
 
     [Fact]
@@ -136,7 +136,7 @@ public class CurrentUserTests
 
         var sut = CreateCurrentUser(principal);
 
-        sut.FindClaims("permission").Should().BeEquivalentTo(["read", "write", "delete"]);
+        sut.FindClaims("permission").ShouldBe(["read", "write", "delete"], ignoreOrder: true);
     }
 
     [Fact]
@@ -152,7 +152,7 @@ public class CurrentUserTests
         var mapping = new ClaimsMappingOptions { UserIdClaimType = "custom_uid" };
         var sut = CreateCurrentUser(principal, mapping);
 
-        sut.Id.Should().Be("99");
+        sut.Id.ShouldBe("99");
     }
 
     [Fact]
@@ -167,7 +167,7 @@ public class CurrentUserTests
         var mapping = new ClaimsMappingOptions { EmailClaimType = "preferred_email" };
         var sut = CreateCurrentUser(principal, mapping);
 
-        sut.Email.Should().Be("custom@example.com");
+        sut.Email.ShouldBe("custom@example.com");
     }
 
     [Fact]
@@ -184,6 +184,6 @@ public class CurrentUserTests
         var mapping = new ClaimsMappingOptions { RoleClaimType = "realm_roles" };
         var sut = CreateCurrentUser(principal, mapping);
 
-        sut.Roles.Should().BeEquivalentTo(["Admin", "Manager"]);
+        sut.Roles.ShouldBe(["Admin", "Manager"], ignoreOrder: true);
     }
 }

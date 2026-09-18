@@ -1,7 +1,7 @@
-using FluentAssertions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.Extensions.Options;
+using Shouldly;
 using Xunit;
 
 namespace PMQ.Identity.Tests.Authorization;
@@ -22,10 +22,10 @@ public class PmqPolicyProviderTests
 
         var policy = await provider.GetPolicyAsync(policyName);
 
-        policy.Should().NotBeNull();
-        policy!.Requirements.Should().Contain(r => r is RolesAuthorizationRequirement);
+        policy.ShouldNotBeNull();
+        policy!.Requirements.ShouldContain(r => r is RolesAuthorizationRequirement);
         var roleReq = policy.Requirements.OfType<RolesAuthorizationRequirement>().Single();
-        roleReq.AllowedRoles.Should().Contain("Manager");
+        roleReq.AllowedRoles.ShouldContain("Manager");
     }
 
     [Fact]
@@ -36,8 +36,8 @@ public class PmqPolicyProviderTests
 
         var policy = await provider.GetPolicyAsync(policyName);
 
-        policy.Should().NotBeNull();
-        policy!.Requirements.Should().Contain(r => r is DenyAnonymousAuthorizationRequirement);
+        policy.ShouldNotBeNull();
+        policy!.Requirements.ShouldContain(r => r is DenyAnonymousAuthorizationRequirement);
     }
 
     [Fact]
@@ -51,8 +51,8 @@ public class PmqPolicyProviderTests
         var adminRoles = adminPolicy!.Requirements.OfType<RolesAuthorizationRequirement>().Single();
         var userRoles = userPolicy!.Requirements.OfType<RolesAuthorizationRequirement>().Single();
 
-        adminRoles.AllowedRoles.Should().Contain("Admin");
-        userRoles.AllowedRoles.Should().Contain("User");
+        adminRoles.AllowedRoles.ShouldContain("Admin");
+        userRoles.AllowedRoles.ShouldContain("User");
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class PmqPolicyProviderTests
 
         var policy = await provider.GetPolicyAsync("NonExistentPolicy");
 
-        policy.Should().BeNull();
+        policy.ShouldBeNull();
     }
 
     [Fact]
@@ -74,8 +74,8 @@ public class PmqPolicyProviderTests
 
         var policy = await provider.GetPolicyAsync(PmqPolicies.Authenticated);
 
-        policy.Should().NotBeNull();
-        policy!.Requirements.Should().Contain(r => r is DenyAnonymousAuthorizationRequirement);
+        policy.ShouldNotBeNull();
+        policy!.Requirements.ShouldContain(r => r is DenyAnonymousAuthorizationRequirement);
     }
 
     [Fact]
@@ -85,13 +85,13 @@ public class PmqPolicyProviderTests
 
         var policy = await provider.GetDefaultPolicyAsync();
 
-        policy.Should().NotBeNull();
+        policy.ShouldNotBeNull();
     }
 
     [Fact]
     public void HasRole_GeneratesCorrectPolicyName()
     {
-        PmqPolicies.HasRole("Manager").Should().Be("RequireRole:Manager");
-        PmqPolicies.HasRole("Admin").Should().Be("RequireRole:Admin");
+        PmqPolicies.HasRole("Manager").ShouldBe("RequireRole:Manager");
+        PmqPolicies.HasRole("Admin").ShouldBe("RequireRole:Admin");
     }
 }

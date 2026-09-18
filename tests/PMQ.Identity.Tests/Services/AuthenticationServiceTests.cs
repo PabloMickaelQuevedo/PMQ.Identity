@@ -1,5 +1,5 @@
-using FluentAssertions;
 using NSubstitute;
+using Shouldly;
 using Xunit;
 
 namespace PMQ.Identity.Tests.Services;
@@ -23,7 +23,7 @@ public class AuthenticationServiceTests
 
         var result = await _sut.AuthenticateAsync("unknown@example.com", "password");
 
-        result.Should().BeNull();
+        result.ShouldBeNull();
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class AuthenticationServiceTests
 
         var result = await _sut.AuthenticateAsync("user@example.com", "wrong");
 
-        result.Should().BeNull();
+        result.ShouldBeNull();
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class AuthenticationServiceTests
 
         var result = await _sut.AuthenticateAsync("user@example.com", "password");
 
-        result.Should().BeNull();
+        result.ShouldBeNull();
     }
 
     [Fact]
@@ -75,8 +75,8 @@ public class AuthenticationServiceTests
 
         var result = await _sut.AuthenticateAsync("user@example.com", "correct-password");
 
-        result.Should().NotBeNull();
-        result!.AccessToken.Should().Be("jwt-token");
-        result.ExpiresIn.Should().Be(3600);
+        result.ShouldNotBeNull();
+        result!.AccessToken.ShouldBe("jwt-token");
+        result.ExpiresIn.ShouldBe(3600);
     }
 }

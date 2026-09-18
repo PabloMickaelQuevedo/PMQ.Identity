@@ -1,7 +1,7 @@
-using FluentAssertions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using Xunit;
 
 namespace PMQ.Identity.Tests;
@@ -22,7 +22,7 @@ public class PmqIdentityServiceCollectionExtensionsTests
         services.AddPmqIdentity(configuration);
 
         var provider = services.BuildServiceProvider();
-        services.Should().Contain(s => s.ServiceType.Name == "IAuthenticationService");
+        services.ShouldContain(s => s.ServiceType.Name == "IAuthenticationService");
     }
 
     [Fact]
@@ -39,8 +39,8 @@ public class PmqIdentityServiceCollectionExtensionsTests
 
         services.AddPmqIdentity(configuration);
 
-        services.Should().Contain(s => s.ServiceType == typeof(ITokenService));
-        services.Should().Contain(s => s.ServiceType == typeof(AuthenticationService));
+        services.ShouldContain(s => s.ServiceType == typeof(ITokenService));
+        services.ShouldContain(s => s.ServiceType == typeof(AuthenticationService));
     }
 
     [Fact]
@@ -53,10 +53,10 @@ public class PmqIdentityServiceCollectionExtensionsTests
             ["IdentitySettings:External:Audience"] = "my-api",
         });
 
-        var act = () => services.AddPmqIdentity(configuration);
+        var exception = Should.Throw<InvalidOperationException>(() => services.AddPmqIdentity(configuration));
 
-        act.Should().Throw<InvalidOperationException>()
-            .WithMessage("*Authority*required*");
+        exception.Message.ShouldContain("Authority");
+        exception.Message.ShouldContain("required");
     }
 
     [Fact]
@@ -69,10 +69,10 @@ public class PmqIdentityServiceCollectionExtensionsTests
             ["IdentitySettings:External:Authority"] = "https://idp.example.com",
         });
 
-        var act = () => services.AddPmqIdentity(configuration);
+        var exception = Should.Throw<InvalidOperationException>(() => services.AddPmqIdentity(configuration));
 
-        act.Should().Throw<InvalidOperationException>()
-            .WithMessage("*Audience*required*");
+        exception.Message.ShouldContain("Audience");
+        exception.Message.ShouldContain("required");
     }
 
     [Fact]
@@ -86,10 +86,10 @@ public class PmqIdentityServiceCollectionExtensionsTests
             ["IdentitySettings:Local:Audience"] = "my-api",
         });
 
-        var act = () => services.AddPmqIdentity(configuration);
+        var exception = Should.Throw<InvalidOperationException>(() => services.AddPmqIdentity(configuration));
 
-        act.Should().Throw<InvalidOperationException>()
-            .WithMessage("*SecretKey*required*");
+        exception.Message.ShouldContain("SecretKey");
+        exception.Message.ShouldContain("required");
     }
 
     [Fact]
@@ -104,10 +104,9 @@ public class PmqIdentityServiceCollectionExtensionsTests
             ["IdentitySettings:Local:SecretKey"] = "short",
         });
 
-        var act = () => services.AddPmqIdentity(configuration);
+        var exception = Should.Throw<InvalidOperationException>(() => services.AddPmqIdentity(configuration));
 
-        act.Should().Throw<InvalidOperationException>()
-            .WithMessage("*at least 32 characters*");
+        exception.Message.ShouldContain("at least 32 characters");
     }
 
     [Fact]
@@ -126,7 +125,7 @@ public class PmqIdentityServiceCollectionExtensionsTests
 
         services.AddPmqIdentity(configuration, options => options.UseLocal());
 
-        services.Should().Contain(s => s.ServiceType == typeof(ITokenService));
+        services.ShouldContain(s => s.ServiceType == typeof(ITokenService));
     }
 
     [Fact]
@@ -142,7 +141,7 @@ public class PmqIdentityServiceCollectionExtensionsTests
 
         services.AddPmqIdentity(configuration);
 
-        services.Should().Contain(s => s.ServiceType == typeof(ICurrentUser));
+        services.ShouldContain(s => s.ServiceType == typeof(ICurrentUser));
     }
 
     [Fact]
@@ -158,7 +157,7 @@ public class PmqIdentityServiceCollectionExtensionsTests
 
         services.AddPmqIdentity(configuration);
 
-        services.Should().Contain(s => s.ServiceType == typeof(ClaimsMappingOptions));
+        services.ShouldContain(s => s.ServiceType == typeof(ClaimsMappingOptions));
     }
 
     [Fact]
@@ -174,7 +173,7 @@ public class PmqIdentityServiceCollectionExtensionsTests
 
         services.AddPmqIdentity(configuration);
 
-        services.Should().Contain(s => s.ServiceType == typeof(IAuthorizationPolicyProvider));
+        services.ShouldContain(s => s.ServiceType == typeof(IAuthorizationPolicyProvider));
     }
 
     [Fact]
@@ -199,8 +198,8 @@ public class PmqIdentityServiceCollectionExtensionsTests
 
         var provider = services.BuildServiceProvider();
         var mapping = provider.GetRequiredService<ClaimsMappingOptions>();
-        mapping.RoleClaimType.Should().Be("realm_access.roles");
-        mapping.UserIdClaimType.Should().Be("preferred_username");
+        mapping.RoleClaimType.ShouldBe("realm_access.roles");
+        mapping.UserIdClaimType.ShouldBe("preferred_username");
     }
 
     private static IConfiguration BuildConfiguration(Dictionary<string, string?> values) =>

@@ -26,7 +26,6 @@ updates:
           - "Shouldly"
           - "Moq*"
           - "NSubstitute"
-          - "FluentAssertions"
 
   - package-ecosystem: github-actions
     directory: /

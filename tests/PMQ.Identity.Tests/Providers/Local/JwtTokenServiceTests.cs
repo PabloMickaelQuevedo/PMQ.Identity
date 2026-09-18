@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using FluentAssertions;
 using Microsoft.Extensions.Options;
+using Shouldly;
 using Xunit;
 
 namespace PMQ.Identity.Tests.Providers.Local;
@@ -31,8 +31,8 @@ public class JwtTokenServiceTests
 
         var result = await service.GenerateTokenAsync(user);
 
-        result.AccessToken.Should().NotBeNullOrWhiteSpace();
-        result.ExpiresIn.Should().Be(30 * 60);
+        result.AccessToken.ShouldNotBeNullOrWhiteSpace();
+        result.ExpiresIn.ShouldBe(30 * 60);
     }
 
     [Fact]
@@ -47,9 +47,9 @@ public class JwtTokenServiceTests
         var handler = new JwtSecurityTokenHandler();
         var jwt = handler.ReadJwtToken(result.AccessToken);
 
-        jwt.Claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Sub && c.Value == "42");
-        jwt.Claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Email && c.Value == "admin@example.com");
-        jwt.Claims.Should().Contain(c => c.Type == "role" && c.Value == "Admin");
+        jwt.Claims.ShouldContain(c => c.Type == JwtRegisteredClaimNames.Sub && c.Value == "42");
+        jwt.Claims.ShouldContain(c => c.Type == JwtRegisteredClaimNames.Email && c.Value == "admin@example.com");
+        jwt.Claims.ShouldContain(c => c.Type == "role" && c.Value == "Admin");
     }
 
     [Fact]
@@ -63,8 +63,8 @@ public class JwtTokenServiceTests
         var handler = new JwtSecurityTokenHandler();
         var jwt = handler.ReadJwtToken(result.AccessToken);
 
-        jwt.Issuer.Should().Be("TestIssuer");
-        jwt.Audiences.Should().Contain("TestAudience");
+        jwt.Issuer.ShouldBe("TestIssuer");
+        jwt.Audiences.ShouldContain("TestAudience");
     }
 
     [Fact]
@@ -78,6 +78,6 @@ public class JwtTokenServiceTests
         var handler = new JwtSecurityTokenHandler();
         var jwt = handler.ReadJwtToken(result.AccessToken);
 
-        jwt.ValidTo.Should().BeCloseTo(DateTime.UtcNow.AddMinutes(30), TimeSpan.FromSeconds(5));
+        jwt.ValidTo.ShouldBe(DateTime.UtcNow.AddMinutes(30), TimeSpan.FromSeconds(5));
     }
 }
