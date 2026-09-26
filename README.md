@@ -6,6 +6,14 @@ Supports **External** (OIDC/JWT — e.g. Keycloak, Auth0) and **Local** (self-is
 [![NuGet](https://img.shields.io/nuget/v/PMQ.Identity.svg)](https://www.nuget.org/packages/PMQ.Identity)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.txt)
 
+## Target Frameworks
+
+This package targets `net8.0` and `net10.0`.
+
+> **.NET 8 reaches end of support on 2026-11-10.** Version 2.0, released after that date, will
+> target `net10.0` only. Applications that stay on .NET 8 can keep using 1.x, which will receive
+> security fixes only, for six months after 2.0 is released.
+
 ## Installation
 
 ```bash
